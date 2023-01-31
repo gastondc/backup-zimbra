@@ -20,9 +20,16 @@ log_check_message() {
 mkdir -p ${BACKUP_HOME}/daily/${DATE}
 log_check_message "Creating backup directory"
 
+# Listar usuarios 
+users=$(su - zimbra -c "zmprov -l gaa")
+
+
 # Backup Zimbra 
-su - zimbra -c "zmbackup -a -v -t full -c ${BACKUP_HOME}/daily/${DATE}"
-log_check_message "Zimbra Backup"
+for i in $users
+do 
+  su - zimbra -c "zmmailbox -z -m $i getRestURL \"//?fmt=tgz\" > ${BACKUP_HOME}/daily/${DATE}/$i.tgz"
+  log_check_message "Zimbra Backup $i"
+done
 
 # Backup mysql 
 mysqldump --opt --user=root --password=password --all-databases | gzip > ${BACKUP_HOME}/daily/${DATE}/zimbra-mysql.sql.gz
