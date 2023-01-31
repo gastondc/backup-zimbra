@@ -32,8 +32,8 @@ do
 done
 
 # Backup mysql 
-mysqldump --opt --user=root --password=password --all-databases | gzip > ${BACKUP_HOME}/daily/${DATE}/zimbra-mysql.sql.gz
-log_check_message "MySQL Backup"
+#mysqldump --opt --user=root --password=password --all-databases | gzip > ${BACKUP_HOME}/daily/${DATE}/zimbra-mysql.sql.gz
+#log_check_message "MySQL Backup"
 
 # Copy daily backup to remote server
 scp -r ${BACKUP_HOME}/daily/${DATE} ${REMOTE_SERVER}:${REMOTE_DIR}
