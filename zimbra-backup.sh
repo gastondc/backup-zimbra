@@ -28,9 +28,10 @@ users=$(su - zimbra -c "zmprov -l gaa")
 # Backup Zimbra 
 for i in $users
 do 
-  
+  echo "Respaldando cuenta" $i
   su - zimbra -c "zmmailbox -z -m $i getRestURL \"//?fmt=tgz\" > ${BACKUP_HOME}/daily/${DATE}/$i.tgz"
   log_check_message "Zimbra Backup $i"
+  echo "File size result: " $(stat -c %s ${BACKUP_HOME}/daily/${DATE}/$i.tgz | numfmt --to=iec)
 done
 
 # Backup mysql 
